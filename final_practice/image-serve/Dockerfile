@@ -9,7 +9,7 @@ COPY . .
 RUN go build -o server .
 
 # Образ запуска
-FROM alpine:3.23
+FROM scratch
 
 # Указываем рабочую директорию
 WORKDIR /app

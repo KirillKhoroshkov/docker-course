@@ -3,8 +3,8 @@
 ```bash
 # Находимся в final_practice
 # Собираем образы
-docker build -t image-compress image-compress
-docker build -t image-serve image-serve
+docker build -t image-compress:1.0.0 image-compress
+docker build -t image-serve:1.0.0 image-serve
 # Создаем сеть и том
 docker network create image_network
 docker volume create image_volume
