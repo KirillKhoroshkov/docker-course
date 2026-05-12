@@ -1,7 +1,7 @@
 ### Команды для предварительной настройки и запуска приложений совместно
 
 ```bash
-# Находимся в final_practice
+# Находимся в docker-final-practice
 # Собираем образы
 docker build -t image-compress:1.0.0 image-compress
 docker build -t image-serve:1.0.0 image-serve
