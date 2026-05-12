@@ -1,0 +1,27 @@
+name: praktikum
+
+services:
+  prometheus:
+    image: prom/prometheus:v3.4.1
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    volumes:
+      - prom_data:/prometheus
+  grafana:
+    image: grafana/grafana:12.0.2
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    env_file:
+      - ./grafana.env
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+
+volumes:
+  prom_data:

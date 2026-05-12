@@ -1,0 +1,35 @@
+services:
+  gitea:
+    image: gitea/gitea:1.24.2
+    container_name: gitea
+    environment:
+      DB_TYPE: ${DB_TYPE}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWD: ${DB_PASSWD}
+    env_file:
+      - gitea.env
+    restart: always
+    volumes:
+      - git_data:/data
+    ports:
+      - "3000:3000"
+  postgres:
+    image: postgres:alpine3.22
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    env_file:
+      - postgres.env
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  git_data:
+  postgres_data:
