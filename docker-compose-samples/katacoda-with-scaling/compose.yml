@@ -1,0 +1,11 @@
+name: 'scaling-example'
+
+services:
+  client:
+    image: curlimages/curl:8.15.0
+    command: [ "sleep", "infinity" ] # Запускаем бесконечный sleep, чтобы контейнер не завершался
+
+  web:
+    image: katacoda/docker-http-server:v4
+    deploy:
+      replicas: 3
