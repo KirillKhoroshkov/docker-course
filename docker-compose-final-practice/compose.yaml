@@ -1,0 +1,81 @@
+x-base-settings: &base-settings
+  restart: unless-stopped
+
+x-redis-settings: &redis-settings
+  <<: *base-settings
+  networks:
+    - service_network
+  secrets:
+    - redis_password
+
+x-service-settings: &service-settings
+  <<: *redis-settings
+  depends_on:
+    - redis
+
+services:
+  redis:
+    image: redis:7-alpine
+    <<: *redis-settings
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf # Монтируем конфиг
+      - redis_data:/data # Монтируем именованный том для данных
+    command: redis-server /etc/redis/redis.conf --requirepass_file /run/secrets/redis_password
+
+  menu-service:
+    build:
+      context: ./menu-service
+    <<: *service-settings
+    deploy:
+      replicas: 2
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - PORT=8000 # Порт, на котором слушает menu-service
+      - ORDER_SERVICE_URL=${ORDER_SERVICE_URL}
+
+  order-service:
+    build:
+      context: ./order-service
+    <<: *service-settings
+    deploy:
+      replicas: 2
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - SERVER_PORT=8001 # Порт, на котором слушает order-service
+      - MENU_SERVICE_URL=${MENU_SERVICE_URL}
+
+  frontend:
+    <<: *base-settings
+    build:
+      context: ./frontend
+    networks:
+      - frontend_network
+
+  nginx:
+    <<: *base-settings
+    build:
+      context: ./nginx
+    ports:
+      - "8080:${NGINX_PORT}"
+    networks:
+      - service_network
+      - frontend_network
+    depends_on:
+      - menu-service
+      - order-service
+      - frontend
+
+volumes:
+  redis_data:
+
+secrets:
+  redis_password:
+    file: ./secrets/redis
+
+networks:
+  service_network:
+    driver: bridge
+  frontend_network:
+    driver: bridge

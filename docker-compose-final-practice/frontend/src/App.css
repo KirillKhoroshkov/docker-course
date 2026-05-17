@@ -1,0 +1,250 @@
+/* Custom styles for Galactic Pizza */
+.App {
+  min-height: 100vh;
+}
+
+/* Space-themed animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Card hover effects */
+.card:hover {
+  animation: pulse-glow 2s infinite;
+}
+
+.pizza-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pizza-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+/* Buttons */
+.btn {
+  transition: all 0.3s ease;
+  border-radius: 25px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Form elements */
+.form-control, .form-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+  color: white;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Progress bars */
+.progress {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  transition: width 1s ease;
+}
+
+/* Alerts */
+.alert {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+}
+
+.alert-success {
+  background: rgba(40, 167, 69, 0.2);
+  border-color: rgba(40, 167, 69, 0.3);
+  color: #d4edda;
+}
+
+.alert-danger {
+  background: rgba(220, 53, 69, 0.2);
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #f8d7da;
+}
+
+.alert-info {
+  background: rgba(13, 202, 240, 0.2);
+  border-color: rgba(13, 202, 240, 0.3);
+  color: #d1ecf1;
+}
+
+.alert-warning {
+  background: rgba(255, 193, 7, 0.2);
+  border-color: rgba(255, 193, 7, 0.3);
+  color: #fff3cd;
+}
+
+/* Badges */
+.badge {
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.75em;
+}
+
+.badge.bg-warning {
+  background: linear-gradient(45deg, #ffc107, #ff8c00) !important;
+}
+
+.badge.bg-success {
+  background: linear-gradient(45deg, #28a745, #20c997) !important;
+}
+
+.badge.bg-danger {
+  background: linear-gradient(45deg, #dc3545, #fd7e14) !important;
+}
+
+/* Tables */
+.table-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.table-dark th {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.table-dark td {
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Loading states */
+.spinner-border {
+  animation: spinner-border 0.75s linear infinite;
+}
+
+/* Status icons */
+.text-orange {
+  color: #ff8c00 !important;
+}
+
+/* Navbar */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: float-slow 3s ease-in-out infinite;
+}
+
+/* Footer */
+footer {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .btn-lg {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .display-4 {
+    font-size: 2rem;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #764ba2, #667eea);
+}
+
+/* Custom utility classes */
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.border-secondary {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Position sticky fix for sidebar */
+@media (min-width: 992px) {
+  .position-sticky {
+    position: sticky !important;
+  }
+}

@@ -1,0 +1,224 @@
+# Galactic Pizza Order Service Configuration
+spring:
+  application:
+    name: galactic-pizza-order-service
+  
+  profiles:
+    active: galactic
+  
+  # Redis Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST:redis-cache}
+      port: ${REDIS_PORT:6379}
+      database: 0
+      timeout: 10s
+      password: ${REDIS_PASSWORD:}
+      password-file: ${REDIS_PASSWORD_FILE:/run/secrets/redis_password}
+          
+  # Jackson JSON Configuration
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    deserialization:
+      fail-on-unknown-properties: false
+    time-zone: UTC
+
+# Server Configuration
+server:
+  port: ${SERVER_PORT:8001}
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    min-response-size: 1024
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# Logging Configuration
+logging:
+  level:
+    com.galacticpizza.orderservice: INFO
+    org.springframework.data.redis: WARN
+    org.springframework.web: INFO
+    reactor.netty: WARN
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management & Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  health:
+    redis:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Application Configuration
+app:
+  name: "Galactic Pizza Order Service"
+  version: "@project.version@"
+  description: "Intergalactic pizza order management system"
+  
+  # External Service URLs
+  menu-service:
+    url: ${MENU_SERVICE_URL:http://menu-service:8000}
+    timeout: 10s
+    retry:
+      max-attempts: 3
+      delay: 1s
+  
+  # Order Configuration
+  order:
+    max-items-per-order: 50
+    max-order-value: 10000
+    default-timeout: 30m
+    
+    # Status Configuration
+    status:
+      valid-transitions:
+        pending: [preparing, cancelled]
+        preparing: [ready, cancelled]
+        ready: [in_transit, cancelled]
+        in_transit: [delivered]
+        delivered: []
+        cancelled: []
+    
+    # Delivery Configuration
+    delivery:
+      default-fee: 100
+      galaxy-fees:
+        "Milky Way": 50
+        "Andromeda": 150
+        "Triangulum": 200
+        "Large Magellanic Cloud": 100
+        "Small Magellanic Cloud": 120
+        "Whirlpool": 180
+        "Sombrero": 220
+        "Pinwheel": 160
+      
+      estimated-times:
+        "Milky Way": "25-35 parsecs"
+        "Andromeda": "45-60 parsecs"
+        "Triangulum": "50-70 parsecs"
+        "Large Magellanic Cloud": "35-45 parsecs"
+        "Small Magellanic Cloud": "40-50 parsecs"
+        "Whirlpool": "55-75 parsecs"
+        "Sombrero": "60-80 parsecs"
+        "Pinwheel": "50-65 parsecs"
+        "default": "30-60 parsecs"
+  
+  # Cache Configuration
+  cache:
+    redis:
+      order-ttl: 24h
+      user-orders-ttl: 2h
+      stats-ttl: 1h
+      health-check-ttl: 1m
+
+# Validation Configuration
+validation:
+  order:
+    user-id:
+      min-length: 1
+      max-length: 100
+    items:
+      min-count: 1
+      max-count: 50
+    special-instructions:
+      max-length: 500
+  
+  delivery-address:
+    galaxy:
+      required: true
+      max-length: 50
+    sector:
+      required: true
+      max-length: 30
+    station:
+      required: true
+      max-length: 100
+  
+  contact-info:
+    name:
+      min-length: 2
+      max-length: 100
+    communication:
+      required: true
+      max-length: 150
+
+---
+# Development Profile
+spring:
+  config:
+    activate:
+      on-profile: development
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ""
+
+logging:
+  level:
+    com.galacticpizza.orderservice: DEBUG
+    org.springframework.data.redis: DEBUG
+
+app:
+  menu-service:
+    url: http://localhost:8000
+
+---
+# Production Profile  
+spring:
+  config:
+    activate:
+      on-profile: production
+
+logging:
+  level:
+    com.galacticpizza.orderservice: INFO
+    org.springframework.data.redis: WARN
+    org.springframework.web: WARN
+
+---
+# Galactic Profile (Docker/Container Environment)
+spring:
+  config:
+    activate:
+      on-profile: galactic
+
+  data:
+    redis:
+      host: ${REDIS_HOST:redis-cache}
+      port: ${REDIS_PORT:6379}
+
+app:
+  menu-service:
+    url: ${MENU_SERVICE_URL:http://menu-service:8000}
+
+server:
+  port: ${SERVER_PORT:8001}
+
+logging:
+  level:
+    com.galacticpizza.orderservice: INFO
+    org.springframework.data.redis: WARN

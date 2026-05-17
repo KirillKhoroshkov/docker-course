@@ -1,0 +1,26 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "Система заказа пиццы для межгалактических путешественников, демонстрирующая микросервисную архитектуру с использованием Docker Compose.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.7.0",
+    "react-scripts": "^5.0.1",
+    "winston": "^3.17.0"
+  }
+}
