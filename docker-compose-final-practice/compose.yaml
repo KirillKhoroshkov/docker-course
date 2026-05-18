@@ -33,6 +33,12 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - PORT=8000 # Порт, на котором слушает menu-service
       - ORDER_SERVICE_URL=${ORDER_SERVICE_URL}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
   order-service:
     build:
@@ -45,6 +51,12 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - SERVER_PORT=8001 # Порт, на котором слушает order-service
       - MENU_SERVICE_URL=${MENU_SERVICE_URL}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8001/actuator/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
   frontend:
     <<: *base-settings
@@ -52,6 +64,12 @@ services:
       context: ./frontend
     networks:
       - frontend_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:80/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
   nginx:
     <<: *base-settings
@@ -76,6 +94,4 @@ secrets:
 
 networks:
   service_network:
-    driver: bridge
   frontend_network:
-    driver: bridge

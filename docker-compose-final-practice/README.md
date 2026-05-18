@@ -5,7 +5,7 @@
 
 ### Запуск
 
-Для запуска используйте команду `docker compose up --build`
+Для запуска используйте команду `docker compose up --build -d`
 
 ---
 
